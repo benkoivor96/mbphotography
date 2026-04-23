@@ -293,7 +293,7 @@
 
         .hero-indicator.active::after {
             width: 100%;
-            transition: width 5s linear;
+            transition: width 3s linear;
         }
 
         .hero-indicator.done::after {
@@ -1220,7 +1220,7 @@
         void indicators[currentSlide].offsetWidth; // reflow
         indicators[currentSlide].classList.add('active');
         clearInterval(slideTimer);
-        slideTimer = setInterval(nextSlide, slideDuration);
+        slideTimer = setInterval(nextSlide, 3000);
     }
 
     function nextSlide() {
@@ -1235,7 +1235,7 @@
 
     // Start slideshow after loader
     setTimeout(() => {
-        slideTimer = setInterval(nextSlide, slideDuration);
+        slideTimer = setInterval(nextSlide, 3000);
     }, 2500);
 </script>
 
