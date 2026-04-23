@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MB Photography — Miroslav Balog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0c0c0c;
+            --bg-card: #141414;
+            --bg-elevated: #1a1a1a;
+            --white: #f0ece6;
+            --white-dim: #a8a299;
+            --white-muted: #5c5850;
+            --accent: #e8d5b5;
+            --accent-bright: #f2e4cc;
+            --heading: 'Instrument Serif', Georgia, serif;
+            --display: 'Syne', sans-serif;
+            --body: 'Outfit', system-ui, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: var(--body);
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* ── MAGNETIC CURSOR ── */
+        .cursor {
+            width: 16px; height: 16px;
+            border: 1.5px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.4s, height 0.4s, margin 0.4s, background 0.4s, border-color 0.4s;
+            margin-left: -8px; margin-top: -8px;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.expand {
+            width: 64px; height: 64px;
+            margin-left: -32px; margin-top: -32px;
+            background: rgba(232,213,181,0.08);
+            border-color: transparent;
+        }
+
+        .cursor-label {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-family: var(--display);
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+            transform: translate(20px, -10px);
+        }
+
+        .cursor-label.show { opacity: 1; }
+
+        /* ── LOADER ── */
+        .loader {
+            position: fixed; inset: 0;
+            background: var(--bg);
+            z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .loader-inner {
+            text-align: center;
+        }
+
+        .loader-text {
+            font-family: var(--heading);
+            font-size: 1.6rem;
+            font-style: italic;
+            color: var(--accent);
+            opacity: 0;
+            animation: lFade 0.6s 0.2s forwards;
+        }
+
+        .loader-line {
+            width: 80px; height: 1px;
+            background: var(--white-muted);
+            margin: 1.2rem auto 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-line::after {
+            content: ''; display: block;
+            width: 0; height: 100%;
+            background: var(--accent);
+            animation: lBar 1.8s 0.5s ease-in-out forwards;
+        }
+
+        .loader.out {
+            animation: lOut 0.7s 0.1s forwards;
+        }
+
+        @keyframes lFade { to { opacity: 1; } }
+        @keyframes lBar { to { width: 100%; } }
+        @keyframes lOut { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+        /* ── NAV ── */
+        header {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 500;
+            padding: 1.6rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-family: var(--display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-items {
+            display: flex; gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-items a {
+            font-family: var(--body);
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--white-dim);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-items a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -3px;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .nav-items a:hover { color: var(--white); }
+        .nav-items a:hover::after { width: 100%; }
+
+        .menu-btn {
+            display: none;
+            background: none; border: none; cursor: pointer;
+            width: 28px; height: 20px;
+            position: relative;
+        }
+
+        .menu-btn span {
+            display: block; width: 100%; height: 1px;
+            background: var(--white);
+            position: absolute; left: 0;
+            transition: all 0.3s;
+        }
+
+        .menu-btn span:nth-child(1) { top: 0; }
+        .menu-btn span:nth-child(2) { top: 50%; }
+        .menu-btn span:nth-child(3) { bottom: 0; }
+
+        /* ── MOBILE NAV OVERLAY ── */
+        .mobile-nav {
+            position: fixed; inset: 0;
+            background: var(--bg);
+            z-index: 400;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 2rem;
+            opacity: 0; visibility: hidden;
+            transition: all 0.4s;
+        }
+
+        .mobile-nav.open { opacity: 1; visibility: visible; }
+
+        .mobile-nav a {
+            font-family: var(--heading);
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-nav a:hover { opacity: 1; }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: flex-end;
+            padding: 0 3rem 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-media {
+            position: absolute; inset: 0;
+            z-index: 0;
+        }
+
+        .hero-slide {
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.35) contrast(1.1);
+            transform: scale(1.05);
+            animation: heroZoom 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroZoom {
+            0% { transform: scale(1.05) translate(0, 0); }
+            100% { transform: scale(1.12) translate(-1%, -1%); }
+        }
+
+        .hero-media::after {
+            content: '';
+            position: absolute; inset: 0;
+            z-index: 1;
+            background: linear-gradient(
+                to top,
+                var(--bg) 0%,
+                rgba(12,12,12,0.6) 40%,
+                rgba(12,12,12,0.2) 70%,
+                rgba(12,12,12,0.4) 100%
+            );
+        }
+
+        /* Slideshow indicators */
+        .hero-indicators {
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            z-index: 3;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .hero-indicator {
+            width: 28px; height: 2px;
+            background: rgba(240,236,230,0.25);
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-indicator::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 0;
+            background: var(--accent);
+            transition: width 0s;
+        }
+
+        .hero-indicator.active::after {
+            width: 100%;
+            transition: width 5s linear;
+        }
+
+        .hero-indicator.done::after {
+            width: 100%;
+            transition: width 0s;
+        }
+
+        .hero-content {
+            position: relative; z-index: 2;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .hero-label {
+            font-family: var(--display);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: riseIn 0.8s 2.5s forwards;
+        }
+
+        .hero-title {
+            font-family: var(--heading);
+            font-size: clamp(3.5rem, 9vw, 8rem);
+            font-weight: 400;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title .line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero-title .line span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: riseIn 1s forwards;
+        }
+
+        .hero-title .line:nth-child(1) span { animation-delay: 2.6s; }
+        .hero-title .line:nth-child(2) span { animation-delay: 2.75s; }
+        .hero-title .line:nth-child(3) span { animation-delay: 2.9s; }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: riseIn 0.8s 3.2s forwards;
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--white-dim);
+            max-width: 380px;
+        }
+
+        .hero-scroll {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.6rem;
+        }
+
+        .hero-scroll span {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--white-muted);
+        }
+
+        .scroll-line {
+            width: 1px; height: 50px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        @keyframes riseIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── HORIZONTAL GALLERY ── */
+        .h-gallery {
+            padding: 8rem 0 8rem 3rem;
+            overflow: hidden;
+        }
+
+        .h-gallery-head {
+            display: flex; justify-content: space-between;
+            align-items: flex-end;
+            padding-right: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .h-gallery-head .section-num {
+            font-family: var(--display);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: var(--white-muted);
+        }
+
+        .h-gallery-head h2 {
+            font-family: var(--heading);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .h-gallery-head p {
+            font-size: 0.85rem;
+            color: var(--white-dim);
+            max-width: 300px;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 1.2rem;
+            cursor: grab;
+            user-select: none;
+            padding-bottom: 1rem;
+        }
+
+        .gallery-track:active { cursor: grabbing; }
+
+        .g-card {
+            flex-shrink: 0;
+            width: 380px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .g-card img {
+            width: 100%; height: 500px;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.6s;
+            filter: brightness(0.85) saturate(0.9);
+        }
+
+        .g-card:hover img {
+            transform: scale(1.06);
+            filter: brightness(1) saturate(1);
+        }
+
+        .g-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(12,12,12,0.85) 0%, transparent 50%);
+            display: flex; flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .g-card:hover .g-card-overlay { opacity: 1; }
+
+        .g-card-overlay h3 {
+            font-family: var(--heading);
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 0.3rem;
+            transform: translateY(10px);
+            transition: transform 0.5s 0.1s;
+        }
+
+        .g-card:hover .g-card-overlay h3 { transform: translateY(0); }
+
+        .g-card-overlay span {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            transform: translateY(10px);
+            transition: transform 0.5s 0.15s;
+        }
+
+        .g-card:hover .g-card-overlay span { transform: translateY(0); }
+
+        /* ── ABOUT ── */
+        .about {
+            padding: 8rem 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-imgs {
+            position: relative;
+            height: 600px;
+        }
+
+        .about-img {
+            position: absolute;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .about-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.7s;
+        }
+
+        .about-img:hover img { transform: scale(1.05); }
+
+        .about-img-1 {
+            width: 65%; height: 70%;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        .about-img-2 {
+            width: 55%; height: 50%;
+            bottom: 0; right: 0;
+            z-index: 2;
+            box-shadow: -20px -20px 0 var(--bg);
+        }
+
+        .about-text .section-num {
+            font-family: var(--display);
+            font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.3em;
+            color: var(--white-muted);
+            margin-bottom: 1rem;
+        }
+
+        .about-text h2 {
+            font-family: var(--heading);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .about-text h2 em {
+            color: var(--accent);
+        }
+
+        .about-text p {
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: var(--white-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-tags {
+            display: flex; flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 2.5rem;
+        }
+
+        .tag {
+            padding: 0.55rem 1.2rem;
+            border: 1px solid var(--white-muted);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white-dim);
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(232,213,181,0.05);
+        }
+
+        /* ── SERVICES ── */
+        .services {
+            padding: 8rem 3rem;
+            background: var(--bg-card);
+        }
+
+        .services-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-head {
+            display: flex; justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+
+        .services-head h2 {
+            font-family: var(--heading);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--white-muted);
+            border: 1px solid var(--white-muted);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .svc {
+            background: var(--bg-card);
+            padding: 0;
+            transition: background 0.4s;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        .svc:hover { background: var(--bg-elevated); }
+
+        .svc-img {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .svc-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.7s;
+            filter: brightness(0.7);
+        }
+
+        .svc:hover .svc-img img {
+            transform: scale(1.08);
+            filter: brightness(0.9);
+        }
+
+        .svc-body {
+            padding: 2rem;
+        }
+
+        .svc-body .svc-num {
+            font-family: var(--heading);
+            font-size: 2.5rem;
+            color: rgba(232,213,181,0.1);
+            line-height: 1;
+            margin-bottom: 0.8rem;
+        }
+
+        .svc-body h3 {
+            font-family: var(--heading);
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+
+        .svc-body p {
+            font-size: 0.85rem;
+            color: var(--white-dim);
+            line-height: 1.75;
+        }
+
+        /* ── FULL IMAGE DIVIDER ── */
+        .img-divider {
+            height: 55vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-divider img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.4) contrast(1.05);
+        }
+
+        .img-divider-text {
+            position: absolute;
+            inset: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .img-divider-text h2 {
+            font-family: var(--heading);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-style: italic;
+            text-align: center;
+            line-height: 1.15;
+        }
+
+        .img-divider-text h2 em {
+            color: var(--accent);
+        }
+
+        /* ── CONTACT ── */
+        .contact {
+            padding: 10rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(232,213,181,0.04) 0%, transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .contact .section-num {
+            font-family: var(--display);
+            font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.3em;
+            color: var(--white-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact h2 {
+            font-family: var(--heading);
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact h2 em { color: var(--accent); }
+
+        .contact > p {
+            font-size: 1rem;
+            color: var(--white-dim);
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 3rem;
+        }
+
+        .contact-actions {
+            display: flex; justify-content: center;
+            gap: 1rem; flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .c-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 1rem 2.2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: var(--body);
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .c-btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+        }
+
+        .c-btn-primary:hover {
+            background: var(--accent-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(232,213,181,0.15);
+        }
+
+        .c-btn-primary svg { transition: transform 0.3s; }
+        .c-btn-primary:hover svg { transform: translateX(4px); }
+
+        .c-btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--white-muted);
+        }
+
+        .c-btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .contact-line {
+            width: 50px; height: 1px;
+            background: var(--white-muted);
+            margin: 0 auto 2rem;
+        }
+
+        .contact-info {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white-muted);
+        }
+
+        .contact-info a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover { color: var(--accent-bright); }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 2.5rem 3rem;
+            display: flex; justify-content: space-between;
+            align-items: center;
+        }
+
+        footer span {
+            font-size: 0.7rem;
+            color: var(--white-muted);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            display: flex; gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.7rem;
+            color: var(--white-muted);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ── SCROLL ANIMATIONS ── */
+        .reveal {
+            opacity: 0; transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.vis { opacity: 1; transform: translateY(0); }
+
+        .reveal-s {
+            opacity: 0; transform: scale(0.94);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-s.vis { opacity: 1; transform: scale(1); }
+
+        .stg > * {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        .stg.vis > *:nth-child(1) { transition-delay: 0s; }
+        .stg.vis > *:nth-child(2) { transition-delay: 0.12s; }
+        .stg.vis > *:nth-child(3) { transition-delay: 0.24s; }
+        .stg.vis > * { opacity: 1; transform: translateY(0); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            header { padding: 1.2rem 1.5rem; }
+            .nav-items { display: none; }
+            .menu-btn { display: block; }
+
+            .hero { padding: 0 1.5rem 4rem; }
+            .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
+            .hero-scroll { display: none; }
+            .hero-indicators { right: 1.5rem; bottom: 1.5rem; }
+
+            .h-gallery { padding: 5rem 0 5rem 1.5rem; }
+            .h-gallery-head { flex-direction: column; align-items: flex-start; gap: 1rem; padding-right: 1.5rem; }
+            .h-gallery-head p { text-align: left; }
+            .g-card { width: 300px; }
+            .g-card img { height: 400px; }
+
+            .about { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
+            .about-imgs { height: 400px; }
+
+            .services { padding: 5rem 1.5rem; }
+            .services-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .service-row { grid-template-columns: 1fr; }
+
+            .img-divider { height: 35vh; }
+
+            .contact { padding: 6rem 1.5rem; }
+
+            footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+
+            .cursor, .cursor-label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+    <div class="loader-inner">
+        <div class="loader-text">MB Photography</div>
+        <div class="loader-line"></div>
+    </div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-label" id="cursorLabel"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+    <a href="#portfolio" onclick="closeMobile()">Portfolio</a>
+    <a href="#o-meni" onclick="closeMobile()">O meni</a>
+    <a href="#usluge" onclick="closeMobile()">Usluge</a>
+    <a href="#kontakt" onclick="closeMobile()">Kontakt</a>
+</div>
+
+<!-- HEADER -->
+<header>
+    <a href="#" class="logo">MB Photography</a>
+    <ul class="nav-items">
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#o-meni">O meni</a></li>
+        <li><a href="#usluge">Usluge</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-media">
+        <div class="hero-slide active">
+            <img src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=1400&q=80" alt="Dance performance">
+        </div>
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80" alt="Concert atmosphere">
+        </div>
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1400&q=80" alt="Portrait photography">
+        </div>
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=1400&q=80" alt="Street photography">
+        </div>
+    </div>
+    <div class="hero-indicators">
+        <button class="hero-indicator active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="hero-indicator" data-slide="1" aria-label="Slide 2"></button>
+        <button class="hero-indicator" data-slide="2" aria-label="Slide 3"></button>
+        <button class="hero-indicator" data-slide="3" aria-label="Slide 4"></button>
+    </div>
+    <div class="hero-content">
+        <p class="hero-label">Fotograf — Zagreb, Hrvatska</p>
+        <h1 class="hero-title">
+            <span class="line"><span>Miroslav</span></span>
+            <span class="line"><span><em>Balog</em></span></span>
+        </h1>
+        <div class="hero-bottom">
+            <p class="hero-desc">Plesna, lifestyle i street fotografija. Hvatam trenutke pune energije i emocije — kadrove koji se ne ponavljaju.</p>
+            <div class="hero-scroll">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HORIZONTAL GALLERY -->
+<section class="h-gallery" id="portfolio">
+    <div class="h-gallery-head reveal">
+        <div>
+            <p class="section-num">01 — Portfolio</p>
+            <h2>Odabrani radovi</h2>
+        </div>
+        <p>Svaki kadar priča svoju priču. Pomakni ulijevo da vidiš više.</p>
+    </div>
+    <div class="gallery-track" id="galleryTrack">
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1547153760-18fc86c83137?w=800&q=80" alt="Dance I">
+            <div class="g-card-overlay"><h3>Movement</h3><span>Dance</span></div>
+        </div>
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80" alt="Concert">
+            <div class="g-card-overlay"><h3>Live Stage</h3><span>Concert</span></div>
+        </div>
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80" alt="Portrait">
+            <div class="g-card-overlay"><h3>Natural Light</h3><span>Portrait</span></div>
+        </div>
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=800&q=80" alt="Street dance">
+            <div class="g-card-overlay"><h3>Urban Flow</h3><span>Street</span></div>
+        </div>
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80" alt="Portrait II">
+            <div class="g-card-overlay"><h3>Character</h3><span>Portrait</span></div>
+        </div>
+        <div class="g-card" data-cursor="View">
+            <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80" alt="Street">
+            <div class="g-card-overlay"><h3>City Pulse</h3><span>Street</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="o-meni">
+    <div class="about">
+        <div class="about-imgs reveal">
+            <div class="about-img about-img-1">
+                <img src="https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=700&q=80" alt="Photographer">
+            </div>
+            <div class="about-img about-img-2">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80" alt="Camera">
+            </div>
+        </div>
+        <div class="about-text reveal">
+            <p class="section-num">02 — O meni</p>
+            <h2>Fotograf koji živi za <em>pokret i ulicu</em></h2>
+            <p>Ja sam Miroslav Balog, fotograf iz Zagreba. Moj rad živi na razmeđu tri svijeta — plesa, lifestylea i ulice. Fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.</p>
+            <p>Pristup mi je direktan: bez pretjeranog režiranja, bez umjetnih poza. Radim brzo i instinktivno jer vjerujem da se najjači kadrovi ne planiraju — oni se dogode.</p>
+            <div class="about-tags">
+                <span class="tag">Dance</span>
+                <span class="tag">Lifestyle</span>
+                <span class="tag">Street</span>
+                <span class="tag">Concerts</span>
+                <span class="tag">Events</span>
+                <span class="tag">Portraits</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="usluge">
+    <div class="services-inner">
+        <div class="services-head reveal">
+            <div>
+                <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1rem;">03 — Usluge</p>
+                <h2>Što radim</h2>
+            </div>
+        </div>
+        <div class="service-row stg">
+            <div class="svc">
+                <div class="svc-img"><img src="https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=600&q=80" alt="Dance"></div>
+                <div class="svc-body">
+                    <div class="svc-num">01</div>
+                    <h3>Plesna fotografija</h3>
+                    <p>Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea. Kadrovi koji prenose ritam i strast.</p>
+                </div>
+            </div>
+            <div class="svc">
+                <div class="svc-img"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80" alt="Lifestyle"></div>
+                <div class="svc-body">
+                    <div class="svc-num">02</div>
+                    <h3>Lifestyle & Portreti</h3>
+                    <p>Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti — fotografije koje govore o karakteru.</p>
+                </div>
+            </div>
+            <div class="svc">
+                <div class="svc-img"><img src="https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=600&q=80" alt="Street"></div>
+                <div class="svc-body">
+                    <div class="svc-num">03</div>
+                    <h3>Street & Events</h3>
+                    <p>Ulice kao pozornica. Koncerti, festivali, urbani trenuci — neponovljive situacije i atmosfere grada uhvaćene u pravom trenutku.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- IMAGE DIVIDER -->
+<div class="img-divider reveal-s">
+    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80" alt="Concert atmosphere">
+    <div class="img-divider-text">
+        <h2>Trenutak koji<br>se <em>ne ponavlja</em></h2>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="kontakt">
+    <div class="reveal">
+        <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1.5rem;">04 — Kontakt</p>
+        <h2>Imate projekt?<br>Javite <em>se</em>.</h2>
+        <p>Dostupan za angažmane u Zagrebu i šire. Plesne predstave, eventi, portreti — dogovorimo suradnju.</p>
+        <div class="contact-actions">
+            <a href="https://www.instagram.com/m.balog_photography/" target="_blank" class="c-btn c-btn-primary">
+                Instagram
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </a>
+            <a href="mailto:info@mbphotography.hr" class="c-btn c-btn-outline">Email</a>
+        </div>
+        <div class="contact-line"></div>
+        <p class="contact-info">Zagreb, Hrvatska &mdash; <a href="https://www.instagram.com/m.balog_photography/" target="_blank">@m.balog_photography</a></p>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <span>&copy; 2026 MB Photography</span>
+    <div class="footer-links">
+        <a href="#portfolio">Portfolio</a>
+        <a href="#o-meni">O meni</a>
+        <a href="#kontakt">Kontakt</a>
+    </div>
+</footer>
+
+<script>
+    // ── LOADER
+    window.addEventListener('load', () => {
+        setTimeout(() => document.getElementById('loader').classList.add('out'), 2300);
+    });
+
+    // ── CURSOR
+    const cur = document.getElementById('cursor');
+    const curLabel = document.getElementById('cursorLabel');
+    let cx = 0, cy = 0, dx = 0, dy = 0;
+
+    document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+
+    (function moveCursor() {
+        dx += (cx - dx) * 0.12;
+        dy += (cy - dy) * 0.12;
+        cur.style.left = dx + 'px';
+        cur.style.top = dy + 'px';
+        curLabel.style.left = cx + 'px';
+        curLabel.style.top = cy + 'px';
+        requestAnimationFrame(moveCursor);
+    })();
+
+    document.querySelectorAll('[data-cursor]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cur.classList.add('expand');
+            curLabel.textContent = el.dataset.cursor;
+            curLabel.classList.add('show');
+        });
+        el.addEventListener('mouseleave', () => {
+            cur.classList.remove('expand');
+            curLabel.classList.remove('show');
+        });
+    });
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => cur.classList.add('expand'));
+        el.addEventListener('mouseleave', () => { cur.classList.remove('expand'); curLabel.classList.remove('show'); });
+    });
+
+    // ── MOBILE MENU
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    menuBtn.addEventListener('click', () => mobileNav.classList.toggle('open'));
+    function closeMobile() { mobileNav.classList.remove('open'); }
+
+    // ── HORIZONTAL DRAG SCROLL
+    const track = document.getElementById('galleryTrack');
+    let isDown = false, startX, scrollL;
+
+    track.addEventListener('mousedown', e => {
+        isDown = true; startX = e.pageX - track.offsetLeft;
+        scrollL = track.scrollLeft;
+    });
+    track.addEventListener('mouseleave', () => isDown = false);
+    track.addEventListener('mouseup', () => isDown = false);
+    track.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        track.scrollLeft = scrollL - (e.pageX - track.offsetLeft - startX) * 1.5;
+    });
+
+    // Allow native horizontal scroll via wheel
+    track.style.overflowX = 'auto';
+    track.style.scrollbarWidth = 'none';
+    track.style.msOverflowStyle = 'none';
+
+    // ── SCROLL REVEAL
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-s, .stg').forEach(el => obs.observe(el));
+
+    // ── PARALLAX HERO (all slides)
+    const heroSlides = document.querySelectorAll('.hero-slide img');
+    window.addEventListener('scroll', () => {
+        const s = window.scrollY;
+        if (s < window.innerHeight) {
+            heroSlides.forEach(img => {
+                img.style.transform = `scale(${1.05 + s * 0.0002}) translateY(${s * 0.15}px)`;
+            });
+        }
+    });
+
+    // ── HERO SLIDESHOW
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.hero-indicator');
+    let currentSlide = 0;
+    const slideDuration = 5000;
+    let slideTimer;
+
+    function goToSlide(index) {
+        slides[currentSlide].classList.remove('active');
+        indicators[currentSlide].classList.remove('active');
+        indicators[currentSlide].classList.remove('done');
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        // Reset all indicators
+        indicators.forEach((ind, i) => {
+            ind.classList.remove('active', 'done');
+            if (i < currentSlide) ind.classList.add('done');
+        });
+        // Trigger progress animation on current
+        void indicators[currentSlide].offsetWidth; // reflow
+        indicators[currentSlide].classList.add('active');
+        clearInterval(slideTimer);
+        slideTimer = setInterval(nextSlide, slideDuration);
+    }
+
+    function nextSlide() {
+        goToSlide((currentSlide + 1) % slides.length);
+    }
+
+    indicators.forEach(btn => {
+        btn.addEventListener('click', () => {
+            goToSlide(parseInt(btn.dataset.slide));
+        });
+    });
+
+    // Start slideshow after loader
+    setTimeout(() => {
+        slideTimer = setInterval(nextSlide, slideDuration);
+    }, 2500);
+</script>
+
+</body>
+</html>
