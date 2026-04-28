@@ -898,6 +898,10 @@
 
             .cursor, .cursor-label { display: none; }
         }
+
+        @media (min-width: 901px) and (max-width: 1100px) {
+            .service-row { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -969,7 +973,7 @@
             <span class="line"><span><em>Balog</em></span></span>
         </h1>
         <div class="hero-bottom">
-            <p class="hero-desc">Plesna, lifestyle i street fotografija. Hvatam trenutke pune energije i emocije — kadrove koji se ne ponavljaju.</p>
+            <p class="hero-desc">Plesna, event, lifestyle i BTS fotografija. Koncerti, krstitke, božićna snimanja, rođendani — hvatam trenutke koji se ne ponavljaju.</p>
             <div class="hero-scroll">
                 <span>Scroll</span>
                 <div class="scroll-line"></div>
@@ -1028,14 +1032,16 @@
         </div>
         <div class="about-text reveal">
             <p class="section-num">02 — O meni</p>
-            <h2>Fotograf koji živi za <em>pokret i ulicu</em></h2>
-            <p>Ja sam Miroslav Balog, fotograf iz Zagreba. Moj rad živi na razmeđu tri svijeta — plesa, lifestylea i ulice. Fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.</p>
+            <h2>Fotograf koji živi za <em>trenutak</em></h2>
+            <p>Ja sam Miroslav Balog, fotograf iz Zagreba. Od plesnih predstava i koncerata, preko božićnih obiteljskih snimanja i krstitki, do BTS produkcija — fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.</p>
             <p>Pristup mi je direktan: bez pretjeranog režiranja, bez umjetnih poza. Radim brzo i instinktivno jer vjerujem da se najjači kadrovi ne planiraju — oni se dogode.</p>
             <div class="about-tags">
                 <span class="tag">Dance</span>
+                <span class="tag">Koncerti</span>
+                <span class="tag">Božićna snimanja</span>
+                <span class="tag">Krstitke</span>
                 <span class="tag">Lifestyle</span>
-                <span class="tag">Street</span>
-                <span class="tag">Concerts</span>
+                <span class="tag">BTS</span>
                 <span class="tag">Events</span>
                 <span class="tag">Portraits</span>
             </div>
@@ -1058,23 +1064,47 @@
                 <div class="svc-body">
                     <div class="svc-num">01</div>
                     <h3>Plesna fotografija</h3>
-                    <p>Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea. Kadrovi koji prenose ritam i strast.</p>
+                    <p>Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea.</p>
+                </div>
+            </div>
+            <div class="svc">
+                <div class="svc-img"><img src="img4.png" alt="Koncerti"></div>
+                <div class="svc-body">
+                    <div class="svc-num">02</div>
+                    <h3>Koncerti & Stage</h3>
+                    <p>Atmosfera, svjetla, energija publike. Koncertna fotografija koja prenosi doživljaj uživo — od intimnih nastupa do velikih pozornica.</p>
+                </div>
+            </div>
+            <div class="svc">
+                <div class="svc-img"><img src="img1.png" alt="Božićna snimanja"></div>
+                <div class="svc-body">
+                    <div class="svc-num">03</div>
+                    <h3>Božićna snimanja</h3>
+                    <p>Čarobna obiteljska snimanja u blagdanskom ugođaju. Toplina, smijeh i zajedništvo pretočeni u uspomene koje traju.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="img7.jpeg" alt="Lifestyle"></div>
                 <div class="svc-body">
-                    <div class="svc-num">02</div>
+                    <div class="svc-num">04</div>
                     <h3>Lifestyle & Portreti</h3>
-                    <p>Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti — fotografije koje govore o karakteru.</p>
+                    <p>Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti.</p>
                 </div>
             </div>
             <div class="svc">
-                <div class="svc-img"><img src="https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=600&q=80" alt="Street"></div>
+                <div class="svc-img"><img src="img5.png" alt="Krstitke i eventi"></div>
                 <div class="svc-body">
-                    <div class="svc-num">03</div>
-                    <h3>Street & Events</h3>
-                    <p>Ulice kao pozornica. Koncerti, festivali, urbani trenuci — neponovljive situacije i atmosfere grada uhvaćene u pravom trenutku.</p>
+                    <div class="svc-num">05</div>
+                    <h3>Krstitke & Događanja</h3>
+                    <p>Krstitke, rođendani, obiteljska okupljanja — važni životni trenuci dokumentirani prirodno i diskretno.</p>
+                </div>
+            </div>
+            <div class="svc">
+                <div class="svc-img"><img src="img6.jpeg" alt="BTS"></div>
+                <div class="svc-body">
+                    <div class="svc-num">06</div>
+                    <h3>BTS & Produkcija</h3>
+                    <p>Behind the scenes fotografija na filmskim i video setovima. Dokumentiranje kreativnog procesa iza kulisa.</p>
                 </div>
             </div>
         </div>
@@ -1094,7 +1124,7 @@
     <div class="reveal">
         <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1.5rem;">04 — Kontakt</p>
         <h2>Imate projekt?<br>Javite <em>se</em>.</h2>
-        <p>Dostupan za angažmane u Zagrebu i šire. Plesne predstave, eventi, portreti — dogovorimo suradnju.</p>
+        <p>Dostupan za angažmane u Zagrebu i šire. Koncerti, plesne predstave, božićna snimanja, krstitke, rođendani, BTS — dogovorimo suradnju.</p>
         <div class="contact-actions">
             <a href="https://www.instagram.com/m.balog_photography/" target="_blank" class="c-btn c-btn-primary">
                 Instagram
