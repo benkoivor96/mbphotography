@@ -168,6 +168,25 @@
         .nav-items a:hover { color: var(--white); }
         .nav-items a:hover::after { width: 100%; }
 
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--white-muted);
+            color: var(--white-dim);
+            font-family: var(--display);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
         .menu-btn {
             display: none;
             background: none; border: none; cursor: pointer;
@@ -921,21 +940,22 @@
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
-    <a href="#portfolio" onclick="closeMobile()">Portfolio</a>
-    <a href="#o-meni" onclick="closeMobile()">O meni</a>
-    <a href="#usluge" onclick="closeMobile()">Usluge</a>
-    <a href="#kontakt" onclick="closeMobile()">Kontakt</a>
+    <a href="#portfolio" onclick="closeMobile()" data-i18n="nav.portfolio">Portfolio</a>
+    <a href="#o-meni" onclick="closeMobile()" data-i18n="nav.about">O meni</a>
+    <a href="#usluge" onclick="closeMobile()" data-i18n="nav.services">Usluge</a>
+    <a href="#kontakt" onclick="closeMobile()" data-i18n="nav.contact">Kontakt</a>
 </div>
 
 <!-- HEADER -->
 <header>
     <a href="#" class="logo">MB Photography</a>
     <ul class="nav-items">
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#o-meni">O meni</a></li>
-        <li><a href="#usluge">Usluge</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="#o-meni" data-i18n="nav.about">O meni</a></li>
+        <li><a href="#usluge" data-i18n="nav.services">Usluge</a></li>
+        <li><a href="#kontakt" data-i18n="nav.contact">Kontakt</a></li>
     </ul>
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
     <button class="menu-btn" id="menuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
     </button>
@@ -968,13 +988,13 @@
         <button class="hero-indicator" data-slide="4" aria-label="Slide 5"></button>
     </div>
     <div class="hero-content">
-        <p class="hero-label">Fotograf — Zagreb, Hrvatska</p>
+        <p class="hero-label" data-i18n="hero.label">Fotograf — Zagreb, Hrvatska</p>
         <h1 class="hero-title">
             <span class="line"><span>Miroslav</span></span>
             <span class="line"><span><em>Balog</em></span></span>
         </h1>
         <div class="hero-bottom">
-            <p class="hero-desc">Plesna, event, lifestyle i BTS fotografija. Koncerti, krstitke, božićna snimanja, rođendani — hvatam trenutke koji se ne ponavljaju.</p>
+            <p class="hero-desc" data-i18n="hero.desc">Plesna, event, lifestyle i BTS fotografija. Koncerti, krstitke, božićna snimanja, rođendani — hvatam trenutke koji se ne ponavljaju.</p>
             <div class="hero-scroll">
                 <span>Scroll</span>
                 <div class="scroll-line"></div>
@@ -987,51 +1007,51 @@
 <section class="h-gallery" id="portfolio">
     <div class="h-gallery-head reveal">
         <div>
-            <p class="section-num">01 — Portfolio</p>
-            <h2>Odabrani radovi</h2>
+            <p class="section-num" data-i18n="portfolio.num">01 — Portfolio</p>
+            <h2 data-i18n="portfolio.title">Odabrani radovi</h2>
         </div>
-        <p>Svaki kadar priča svoju priču. Pomakni ulijevo da vidiš više.</p>
+        <p data-i18n="portfolio.subtitle">Svaki kadar priča svoju priču. Pomakni ulijevo da vidiš više.</p>
     </div>
     <div class="gallery-track" id="galleryTrack">
         <div class="g-card" data-cursor="View">
             <img src="portfolio1.png" alt="Božićno snimanje">
-            <div class="g-card-overlay"><h3>Božićne čarolije</h3><span>Božićna snimanja</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.1">Božićne čarolije</h3><span data-i18n="card.tag.1">Božićna snimanja</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio2.png" alt="Lifestyle jesen">
-            <div class="g-card-overlay"><h3>Jesen u parku</h3><span>Lifestyle</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.2">Jesen u parku</h3><span data-i18n="card.tag.2">Lifestyle</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio3.png" alt="Koncert">
-            <div class="g-card-overlay"><h3>Live Stage</h3><span>Koncerti</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.3">Live Stage</h3><span data-i18n="card.tag.3">Koncerti</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio4.png" alt="BTS produkcija">
-            <div class="g-card-overlay"><h3>Iza kulisa</h3><span>BTS</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.4">Iza kulisa</h3><span data-i18n="card.tag.4">BTS</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio5.png" alt="Krstitke">
-            <div class="g-card-overlay"><h3>Poseban dan</h3><span>Krstitke</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.5">Poseban dan</h3><span data-i18n="card.tag.5">Krstitke</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio6.png" alt="Plesna predstava">
-            <div class="g-card-overlay"><h3>Pod reflektorima</h3><span>Plesna fotografija</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.6">Pod reflektorima</h3><span data-i18n="card.tag.6">Plesna fotografija</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio7.png" alt="Plesna fotografija">
-            <div class="g-card-overlay"><h3>Pokret u kiši</h3><span>Plesna fotografija</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.7">Pokret u kiši</h3><span data-i18n="card.tag.7">Plesna fotografija</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio8.png" alt="Lifestyle portret">
-            <div class="g-card-overlay"><h3>Urban Style</h3><span>Lifestyle</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.8">Urban Style</h3><span data-i18n="card.tag.8">Lifestyle</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio9.png" alt="Portret na moru">
-            <div class="g-card-overlay"><h3>Morska priča</h3><span>Portreti</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.9">Morska priča</h3><span data-i18n="card.tag.9">Portreti</span></div>
         </div>
         <div class="g-card" data-cursor="View">
             <img src="portfolio11.png" alt="Koncert event">
-            <div class="g-card-overlay"><h3>Energija uživo</h3><span>Koncerti</span></div>
+            <div class="g-card-overlay"><h3 data-i18n="card.title.10">Energija uživo</h3><span data-i18n="card.tag.10">Koncerti</span></div>
         </div>
     </div>
 </section>
@@ -1048,15 +1068,15 @@
             </div>
         </div>
         <div class="about-text reveal">
-            <p class="section-num">02 — O meni</p>
-            <h2>Fotograf koji živi za <em>trenutak</em></h2>
-            <p>Ja sam Miroslav Balog, fotograf iz Zagreba. Od plesnih predstava i koncerata, preko božićnih obiteljskih snimanja i krstitki, do BTS produkcija — fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.</p>
-            <p>Pristup mi je direktan: bez pretjeranog režiranja, bez umjetnih poza. Radim brzo i instinktivno jer vjerujem da se najjači kadrovi ne planiraju — oni se dogode.</p>
+            <p class="section-num" data-i18n="about.num">02 — O meni</p>
+            <h2 data-i18n-html="about.title">Fotograf koji živi za <em>trenutak</em></h2>
+            <p data-i18n="about.p1">Ja sam Miroslav Balog, fotograf iz Zagreba. Od plesnih predstava i koncerata, preko božićnih obiteljskih snimanja i krstitki, do BTS produkcija — fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.</p>
+            <p data-i18n="about.p2">Pristup mi je direktan: bez pretjeranog režiranja, bez umjetnih poza. Radim brzo i instinktivno jer vjerujem da se najjači kadrovi ne planiraju — oni se dogode.</p>
             <div class="about-tags">
                 <span class="tag">Dance</span>
-                <span class="tag">Koncerti</span>
-                <span class="tag">Božićna snimanja</span>
-                <span class="tag">Krstitke</span>
+                <span class="tag" data-i18n="tag.koncerti">Koncerti</span>
+                <span class="tag" data-i18n="tag.bozicna">Božićna snimanja</span>
+                <span class="tag" data-i18n="tag.krstitke">Krstitke</span>
                 <span class="tag">Lifestyle</span>
                 <span class="tag">BTS</span>
                 <span class="tag">Events</span>
@@ -1071,8 +1091,8 @@
     <div class="services-inner">
         <div class="services-head reveal">
             <div>
-                <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1rem;">03 — Usluge</p>
-                <h2>Što radim</h2>
+                <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1rem;" data-i18n="services.num">03 — Usluge</p>
+                <h2 data-i18n="services.title">Što radim</h2>
             </div>
         </div>
         <div class="service-row stg">
@@ -1080,48 +1100,48 @@
                 <div class="svc-img"><img src="plesna.png" alt="Dance"></div>
                 <div class="svc-body">
                     <div class="svc-num">01</div>
-                    <h3>Plesna fotografija</h3>
-                    <p>Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea.</p>
+                    <h3 data-i18n="svc.title.1">Plesna fotografija</h3>
+                    <p data-i18n="svc.desc.1">Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="koncerti.png" alt="Koncerti"></div>
                 <div class="svc-body">
                     <div class="svc-num">02</div>
-                    <h3>Koncerti & Stage</h3>
-                    <p>Atmosfera, svjetla, energija publike. Koncertna fotografija koja prenosi doživljaj uživo — od intimnih nastupa do velikih pozornica.</p>
+                    <h3 data-i18n="svc.title.2">Koncerti & Stage</h3>
+                    <p data-i18n="svc.desc.2">Atmosfera, svjetla, energija publike. Koncertna fotografija koja prenosi doživljaj uživo — od intimnih nastupa do velikih pozornica.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="bozicno.png" alt="Božićna snimanja"></div>
                 <div class="svc-body">
                     <div class="svc-num">03</div>
-                    <h3>Božićna snimanja</h3>
-                    <p>Čarobna obiteljska snimanja u blagdanskom ugođaju. Toplina, smijeh i zajedništvo pretočeni u uspomene koje traju.</p>
+                    <h3 data-i18n="svc.title.3">Božićna snimanja</h3>
+                    <p data-i18n="svc.desc.3">Čarobna obiteljska snimanja u blagdanskom ugođaju. Toplina, smijeh i zajedništvo pretočeni u uspomene koje traju.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="img7.jpeg" alt="Lifestyle"></div>
                 <div class="svc-body">
                     <div class="svc-num">04</div>
-                    <h3>Lifestyle & Portreti</h3>
-                    <p>Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti.</p>
+                    <h3 data-i18n="svc.title.4">Lifestyle & Portreti</h3>
+                    <p data-i18n="svc.desc.4">Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="krstitke.png" alt="Krstitke i eventi"></div>
                 <div class="svc-body">
                     <div class="svc-num">05</div>
-                    <h3>Krstitke & Događanja</h3>
-                    <p>Krstitke, rođendani, obiteljska okupljanja — važni životni trenuci dokumentirani prirodno i diskretno.</p>
+                    <h3 data-i18n="svc.title.5">Krstitke & Događanja</h3>
+                    <p data-i18n="svc.desc.5">Krstitke, rođendani, obiteljska okupljanja — važni životni trenuci dokumentirani prirodno i diskretno.</p>
                 </div>
             </div>
             <div class="svc">
                 <div class="svc-img"><img src="bts.png" alt="BTS"></div>
                 <div class="svc-body">
                     <div class="svc-num">06</div>
-                    <h3>BTS & Produkcija</h3>
-                    <p>Behind the scenes fotografija na filmskim i video setovima. Dokumentiranje kreativnog procesa iza kulisa.</p>
+                    <h3 data-i18n="svc.title.6">BTS & Produkcija</h3>
+                    <p data-i18n="svc.desc.6">Behind the scenes fotografija na filmskim i video setovima. Dokumentiranje kreativnog procesa iza kulisa.</p>
                 </div>
             </div>
         </div>
@@ -1132,16 +1152,16 @@
 <div class="img-divider reveal-s">
     <img src="trenutak.png" alt="Trenutak koji se ne ponavlja">
     <div class="img-divider-text">
-        <h2>Trenutak koji<br>se <em>ne ponavlja</em></h2>
+        <h2 data-i18n-html="divider.title">Trenutak koji<br>se <em>ne ponavlja</em></h2>
     </div>
 </div>
 
 <!-- CONTACT -->
 <section class="contact" id="kontakt">
     <div class="reveal">
-        <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1.5rem;">04 — Kontakt</p>
-        <h2>Imate projekt?<br>Javite <em>se</em>.</h2>
-        <p>Dostupan za angažmane u Zagrebu i šire. Koncerti, plesne predstave, božićna snimanja, krstitke, rođendani, BTS — dogovorimo suradnju.</p>
+        <p class="section-num" style="font-family:var(--display);font-size:0.6rem;font-weight:700;letter-spacing:0.3em;color:var(--white-muted);margin-bottom:1.5rem;" data-i18n="contact.num">04 — Kontakt</p>
+        <h2 data-i18n-html="contact.title">Imate projekt?<br>Javite <em>se</em>.</h2>
+        <p data-i18n="contact.desc">Dostupan za angažmane u Zagrebu i šire. Koncerti, plesne predstave, božićna snimanja, krstitke, rođendani, BTS — dogovorimo suradnju.</p>
         <div class="contact-actions">
             <a href="https://www.instagram.com/m.balog_photography/" target="_blank" class="c-btn c-btn-primary">
                 Instagram
@@ -1159,12 +1179,105 @@
     <span>&copy; 2026 MB Photography</span>
     <div class="footer-links">
         <a href="#portfolio">Portfolio</a>
-        <a href="#o-meni">O meni</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="#o-meni" data-i18n="footer.about">O meni</a>
+        <a href="#kontakt" data-i18n="footer.contact">Kontakt</a>
     </div>
 </footer>
 
 <script>
+    // ── LANGUAGE SWITCHER
+    const translations = {
+        hr: {
+            'nav.portfolio': 'Portfolio', 'nav.about': 'O meni', 'nav.services': 'Usluge', 'nav.contact': 'Kontakt',
+            'hero.label': 'Fotograf — Zagreb, Hrvatska',
+            'hero.desc': 'Plesna, event, lifestyle i BTS fotografija. Koncerti, krstitke, božićna snimanja, rođendani — hvatam trenutke koji se ne ponavljaju.',
+            'portfolio.num': '01 — Portfolio', 'portfolio.title': 'Odabrani radovi',
+            'portfolio.subtitle': 'Svaki kadar priča svoju priču. Pomakni ulijevo da vidiš više.',
+            'card.title.1': 'Božićne čarolije', 'card.tag.1': 'Božićna snimanja',
+            'card.title.2': 'Jesen u parku', 'card.tag.2': 'Lifestyle',
+            'card.title.3': 'Live Stage', 'card.tag.3': 'Koncerti',
+            'card.title.4': 'Iza kulisa', 'card.tag.4': 'BTS',
+            'card.title.5': 'Poseban dan', 'card.tag.5': 'Krstitke',
+            'card.title.6': 'Pod reflektorima', 'card.tag.6': 'Plesna fotografija',
+            'card.title.7': 'Pokret u kiši', 'card.tag.7': 'Plesna fotografija',
+            'card.title.8': 'Urban Style', 'card.tag.8': 'Lifestyle',
+            'card.title.9': 'Morska priča', 'card.tag.9': 'Portreti',
+            'card.title.10': 'Energija uživo', 'card.tag.10': 'Koncerti',
+            'about.num': '02 — O meni',
+            'about.title': 'Fotograf koji živi za <em>trenutak</em>',
+            'about.p1': 'Ja sam Miroslav Balog, fotograf iz Zagreba. Od plesnih predstava i koncerata, preko božićnih obiteljskih snimanja i krstitki, do BTS produkcija — fasciniram se energijom koja nastaje u djeliću sekunde i nestaje zauvijek.',
+            'about.p2': 'Pristup mi je direktan: bez pretjeranog režiranja, bez umjetnih poza. Radim brzo i instinktivno jer vjerujem da se najjači kadrovi ne planiraju — oni se dogode.',
+            'tag.koncerti': 'Koncerti', 'tag.bozicna': 'Božićna snimanja', 'tag.krstitke': 'Krstitke',
+            'services.num': '03 — Usluge', 'services.title': 'Što radim',
+            'svc.title.1': 'Plesna fotografija', 'svc.desc.1': 'Energija pokreta zamrznuta u vremenu. Predstave, probe, natjecanja — od klasičnog baleta do street dancea.',
+            'svc.title.2': 'Koncerti & Stage', 'svc.desc.2': 'Atmosfera, svjetla, energija publike. Koncertna fotografija koja prenosi doživljaj uživo — od intimnih nastupa do velikih pozornica.',
+            'svc.title.3': 'Božićna snimanja', 'svc.desc.3': 'Čarobna obiteljska snimanja u blagdanskom ugođaju. Toplina, smijeh i zajedništvo pretočeni u uspomene koje traju.',
+            'svc.title.4': 'Lifestyle & Portreti', 'svc.desc.4': 'Prirodni, opušteni portreti bez forsiranih scena. Osobni branding, editorijali i autentični momenti.',
+            'svc.title.5': 'Krstitke & Događanja', 'svc.desc.5': 'Krstitke, rođendani, obiteljska okupljanja — važni životni trenuci dokumentirani prirodno i diskretno.',
+            'svc.title.6': 'BTS & Produkcija', 'svc.desc.6': 'Behind the scenes fotografija na filmskim i video setovima. Dokumentiranje kreativnog procesa iza kulisa.',
+            'divider.title': 'Trenutak koji<br>se <em>ne ponavlja</em>',
+            'contact.num': '04 — Kontakt',
+            'contact.title': 'Imate projekt?<br>Javite <em>se</em>.',
+            'contact.desc': 'Dostupan za angažmane u Zagrebu i šire. Koncerti, plesne predstave, božićna snimanja, krstitke, rođendani, BTS — dogovorimo suradnju.',
+            'footer.about': 'O meni', 'footer.contact': 'Kontakt'
+        },
+        en: {
+            'nav.portfolio': 'Portfolio', 'nav.about': 'About', 'nav.services': 'Services', 'nav.contact': 'Contact',
+            'hero.label': 'Photographer — Zagreb, Croatia',
+            'hero.desc': 'Dance, event, lifestyle & BTS photography. Concerts, christenings, Christmas shoots, birthdays — capturing moments that don\'t repeat.',
+            'portfolio.num': '01 — Portfolio', 'portfolio.title': 'Selected Works',
+            'portfolio.subtitle': 'Every frame tells its story. Drag left to see more.',
+            'card.title.1': 'Christmas Magic', 'card.tag.1': 'Christmas Shoots',
+            'card.title.2': 'Autumn in the Park', 'card.tag.2': 'Lifestyle',
+            'card.title.3': 'Live Stage', 'card.tag.3': 'Concerts',
+            'card.title.4': 'Behind the Scenes', 'card.tag.4': 'BTS',
+            'card.title.5': 'A Special Day', 'card.tag.5': 'Christenings',
+            'card.title.6': 'Under the Spotlights', 'card.tag.6': 'Dance Photography',
+            'card.title.7': 'Movement in the Rain', 'card.tag.7': 'Dance Photography',
+            'card.title.8': 'Urban Style', 'card.tag.8': 'Lifestyle',
+            'card.title.9': 'Sea Story', 'card.tag.9': 'Portraits',
+            'card.title.10': 'Live Energy', 'card.tag.10': 'Concerts',
+            'about.num': '02 — About',
+            'about.title': 'A Photographer Who Lives for the <em>Moment</em>',
+            'about.p1': 'I\'m Miroslav Balog, a photographer based in Zagreb. From dance performances and concerts, to Christmas family shoots and christenings, to BTS productions — I\'m fascinated by the energy that appears in a fraction of a second and disappears forever.',
+            'about.p2': 'My approach is direct: no excessive directing, no forced poses. I work fast and instinctively because I believe the strongest frames aren\'t planned — they just happen.',
+            'tag.koncerti': 'Concerts', 'tag.bozicna': 'Christmas Shoots', 'tag.krstitke': 'Christenings',
+            'services.num': '03 — Services', 'services.title': 'What I Do',
+            'svc.title.1': 'Dance Photography', 'svc.desc.1': 'The energy of movement frozen in time. Performances, rehearsals, competitions — from classical ballet to street dance.',
+            'svc.title.2': 'Concerts & Stage', 'svc.desc.2': 'Atmosphere, lights, the energy of the crowd. Concert photography that conveys the live experience — from intimate shows to large stages.',
+            'svc.title.3': 'Christmas Shoots', 'svc.desc.3': 'Magical family shoots in a festive atmosphere. Warmth, laughter and togetherness turned into lasting memories.',
+            'svc.title.4': 'Lifestyle & Portraits', 'svc.desc.4': 'Natural, relaxed portraits without forced scenes. Personal branding, editorials and authentic moments.',
+            'svc.title.5': 'Christenings & Events', 'svc.desc.5': 'Christenings, birthdays, family gatherings — important life moments documented naturally and discreetly.',
+            'svc.title.6': 'BTS & Production', 'svc.desc.6': 'Behind the scenes photography on film and video sets. Documenting the creative process behind the curtain.',
+            'divider.title': 'A moment that<br>will <em>never repeat</em>',
+            'contact.num': '04 — Contact',
+            'contact.title': 'Have a project?<br>Get <em>in touch</em>.',
+            'contact.desc': 'Available for engagements in Zagreb and beyond. Concerts, dance performances, Christmas shoots, christenings, birthdays, BTS — let\'s work together.',
+            'footer.about': 'About', 'footer.contact': 'Contact'
+        }
+    };
+
+    let currentLang = 'hr';
+
+    function setLang(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        document.getElementById('langBtn').textContent = lang === 'hr' ? 'EN' : 'HR';
+        const t = translations[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const v = t[el.dataset.i18n];
+            if (v !== undefined) el.textContent = v;
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+            const v = t[el.dataset.i18nHtml];
+            if (v !== undefined) el.innerHTML = v;
+        });
+    }
+
+    document.getElementById('langBtn').addEventListener('click', () => {
+        setLang(currentLang === 'hr' ? 'en' : 'hr');
+    });
+
     // ── LOADER
     window.addEventListener('load', () => {
         setTimeout(() => document.getElementById('loader').classList.add('out'), 2300);
